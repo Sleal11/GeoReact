@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoTracker</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Hoja de estilos propia -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- SVG icons inline via symbol definitions -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Pin de ubicación -->
+    <symbol id="svg-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 10c0 6-8 13-8 13S4 16 4 10a8 8 0 1 1 16 0Z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </symbol>
+    <!-- Satélite / estado -->
+    <symbol id="svg-satelite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m17.5 6.5-1 1"/>
+      <path d="M4 15l5 5"/>
+      <path d="M15 4l5 5"/>
+      <path d="m2 22 6-6"/>
+      <path d="M13.5 10.5 8 16"/>
+      <ellipse cx="12" cy="12" rx="4" ry="4" transform="rotate(-45 12 12)"/>
+    </symbol>
+    <!-- Joystick / controles -->
+    <symbol id="svg-controles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 8v8M8 12h8"/>
+    </symbol>
+    <!-- Gráfico de barras / datos -->
+    <symbol id="svg-datos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3v18h18"/>
+      <path d="M7 16l4-4 4 4 4-6"/>
+    </symbol>
+    <!-- Globo / latitud y longitud -->
+    <symbol id="svg-globo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+      <path d="M2 12h20"/>
+    </symbol>
+    <!-- Diana / precisión -->
+    <symbol id="svg-diana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <circle cx="12" cy="12" r="6"/>
+      <circle cx="12" cy="12" r="2"/>
+    </symbol>
+    <!-- Reloj / hora -->
+    <symbol id="svg-reloj" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 6v6l4 2"/>
+    </symbol>
+    <!-- Flecha circular / reactividad -->
+    <symbol id="svg-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+      <path d="M21 3v5h-5"/>
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+      <path d="M8 16H3v5"/>
+    </symbol>
+    <!-- Mapa -->
+    <symbol id="svg-mapa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+      <line x1="9" y1="3" x2="9" y2="18"/>
+      <line x1="15" y1="6" x2="15" y2="21"/>
+    </symbol>
+    <!-- Play -->
+    <symbol id="svg-play" viewBox="0 0 24 24" fill="currentColor">
+      <polygon points="5 3 19 12 5 21 5 3"/>
+    </symbol>
+    <!-- Stop cuadrado -->
+    <symbol id="svg-stop" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+    </symbol>
+    <!-- Señal de radio -->
+    <symbol id="svg-signal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+      <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+      <circle cx="12" cy="20" r="1" fill="currentColor"/>
+    </symbol>
+  </svg>
+</head>
+<body>
+
+  <!-- ============================================================
+       ENCABEZADO PRINCIPAL
+  ============================================================ -->
+  <header class="encabezado">
+    <div class="encabezado__logo">
+      <svg class="encabezado__icono-svg" aria-hidden="true"><use href="#svg-pin"/></svg>
+      <h1 class="encabezado__titulo">GeoTracker</h1>
+    </div>
+    <p class="encabezado__subtitulo">Seguimiento de ubicación en tiempo real</p>
+  </header>
+
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL
+  ============================================================ -->
+  <main class="contenedor-principal">
+
+    <!-- PANEL IZQUIERDO: controles y datos -->
+    <section class="panel-lateral">
+
+      <!-- Estado actual de la geolocalización -->
+      <div class="tarjeta tarjeta--estado">
+        <h2 class="tarjeta__titulo">
+          <svg class="icono-svg" aria-hidden="true"><use href="#svg-satelite"/></svg>
+          Estado
+        </h2>
+        <div id="estado-mensaje" class="estado-badge estado--inactivo">
+          Esperando acción del usuario
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="tarjeta tarjeta--controles">
+        <h2 class="tarjeta__titulo">
+          <svg class="icono-svg" aria-hidden="true"><use href="#svg-controles"/></svg>
+          Controles
+        </h2>
+        <div class="botones-grupo">
+          <button id="btn-detectar" class="btn btn--primario">
+            <svg class="btn-icono" aria-hidden="true"><use href="#svg-pin"/></svg>
+            Detectar mi ubicación
+          </button>
+          <button id="btn-iniciar" class="btn btn--secundario">
+            <svg class="btn-icono" aria-hidden="true"><use href="#svg-play"/></svg>
+            Iniciar seguimiento
+          </button>
+          <button id="btn-detener" class="btn btn--peligro" disabled>
+            <svg class="btn-icono" aria-hidden="true"><use href="#svg-stop"/></svg>
+            Detener seguimiento
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjetas con datos de coordenadas -->
+      <div class="tarjeta tarjeta--datos">
+        <h2 class="tarjeta__titulo">
+          <svg class="icono-svg" aria-hidden="true"><use href="#svg-datos"/></svg>
+          Datos de ubicación
+        </h2>
+        <div class="datos-grid">
+
+          <!-- Latitud -->
+          <div class="dato-item">
+            <span class="dato-item__etiqueta">
+              <svg class="icono-svg icono-svg--sm" aria-hidden="true"><use href="#svg-globo"/></svg>
+              Latitud
+            </span>
+            <span id="dato-latitud" class="dato-item__valor">—</span>
+          </div>
+
+          <!-- Longitud -->
+          <div class="dato-item">
+            <span class="dato-item__etiqueta">
+              <svg class="icono-svg icono-svg--sm" aria-hidden="true"><use href="#svg-globo"/></svg>
+              Longitud
+            </span>
+            <span id="dato-longitud" class="dato-item__valor">—</span>
+          </div>
+
+          <!-- Precisión -->
+          <div class="dato-item">
+            <span class="dato-item__etiqueta">
+              <svg class="icono-svg icono-svg--sm" aria-hidden="true"><use href="#svg-diana"/></svg>
+              Precisión
+            </span>
+            <span id="dato-precision" class="dato-item__valor">—</span>
+          </div>
+
+          <!-- Última actualización -->
+          <div class="dato-item dato-item--ancho">
+            <span class="dato-item__etiqueta">
+              <svg class="icono-svg icono-svg--sm" aria-hidden="true"><use href="#svg-reloj"/></svg>
+              Última actualización
+            </span>
+            <span id="dato-hora" class="dato-item__valor">—</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Contador de actualizaciones (demuestra reactividad) -->
+      <div class="tarjeta tarjeta--contador">
+        <h2 class="tarjeta__titulo">
+          <svg class="icono-svg" aria-hidden="true"><use href="#svg-refresh"/></svg>
+          Reactividad
+        </h2>
+        <p class="contador-descripcion">
+          Cada vez que la posición cambia, la interfaz se actualiza automáticamente:
+        </p>
+        <div class="contador-numero">
+          <span id="contador-actualizaciones">0</span>
+          <span class="contador-label">actualizaciones</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PANEL DERECHO: mapa interactivo -->
+    <section class="panel-mapa">
+      <div class="tarjeta tarjeta--mapa">
+        <h2 class="tarjeta__titulo">
+          <svg class="icono-svg" aria-hidden="true"><use href="#svg-mapa"/></svg>
+          Mapa interactivo
+        </h2>
+        <!-- Contenedor del mapa Leaflet -->
+        <div id="mapa" class="mapa-contenedor"></div>
+        <p class="mapa-nota">
+          Tiles por <a href="https://www.esri.com" target="_blank" rel="noopener">Esri / ArcGIS</a>
+          · Librería <a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       PIE DE PÁGINA
+  ============================================================ -->
+  <footer class="pie">
+    <p>GeoTracker · Proyecto académico — Desarrollo Web · HTML5, CSS3 &amp; JavaScript</p>
+  </footer>
+
+  <!-- Leaflet JS: debe cargarse antes de script.js -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lógica de la aplicación -->
+  <script src="script.js"></script>
+
+</body>
+</html>

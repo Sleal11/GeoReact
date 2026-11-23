@@ -1,0 +1,470 @@
+/* ============================================================
+   GeoTracker — style.css
+   Estilo moderno tipo dashboard
+   Paleta: azul (#2563EB), blanco, grises neutros
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. VARIABLES CSS GLOBALES
+      Centraliza los colores y medidas para fácil modificación
+---------------------------------------------------------- */
+:root {
+  --color-primario:     #2563EB;   /* Azul principal */
+  --color-primario-osc: #1D4ED8;   /* Azul oscuro (hover) */
+  --color-secundario:   #0EA5E9;   /* Azul cielo */
+  --color-peligro:      #DC2626;   /* Rojo para "detener" */
+  --color-peligro-osc:  #B91C1C;
+  --color-exito:        #16A34A;   /* Verde para estado activo */
+  --color-advertencia:  #D97706;   /* Naranja para advertencias */
+
+  --fondo-pagina:       #F1F5F9;   /* Gris muy claro */
+  --fondo-tarjeta:      #FFFFFF;
+  --color-texto:        #1E293B;   /* Casi negro */
+  --color-texto-suave:  #64748B;   /* Gris medio */
+  --color-borde:        #E2E8F0;
+
+  --radio-borde:        12px;
+  --sombra-tarjeta:     0 2px 12px rgba(0, 0, 0, 0.08);
+  --sombra-hover:       0 6px 20px rgba(37, 99, 235, 0.15);
+  --transicion:         0.25s ease;
+
+  --fuente-principal:   'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ----------------------------------------------------------
+   2. RESET Y BASE
+---------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--fondo-pagina);
+  color: var(--color-texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------------------------
+   3. ENCABEZADO
+---------------------------------------------------------- */
+.encabezado {
+  background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-secundario) 100%);
+  color: white;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+  flex-wrap: wrap;
+}
+
+.encabezado__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* SVG en el encabezado */
+.encabezado__icono-svg {
+  width: 2rem;
+  height: 2rem;
+  stroke: white;
+  flex-shrink: 0;
+}
+
+.encabezado__titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.encabezado__subtitulo {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ----------------------------------------------------------
+   4. CONTENEDOR PRINCIPAL (layout de dos columnas)
+---------------------------------------------------------- */
+.contenedor-principal {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ----------------------------------------------------------
+   5. TARJETAS (componente reutilizable)
+---------------------------------------------------------- */
+.tarjeta {
+  background: var(--fondo-tarjeta);
+  border-radius: var(--radio-borde);
+  border: 1px solid var(--color-borde);
+  box-shadow: var(--sombra-tarjeta);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  transition: box-shadow var(--transicion);
+}
+
+.tarjeta:last-child {
+  margin-bottom: 0;
+}
+
+.tarjeta__titulo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-texto-suave);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* SVG en títulos de tarjetas y etiquetas de datos */
+.icono-svg {
+  width: 1rem;
+  height: 1rem;
+  stroke: currentColor;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* SVG más pequeño para etiquetas de datos */
+.icono-svg--sm {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* SVG dentro de botones */
+.btn-icono {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  /* stroke y fill heredan de currentColor (blanco en botones) */
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+/* ----------------------------------------------------------
+   6. BADGE DE ESTADO
+---------------------------------------------------------- */
+.estado-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all var(--transicion);
+}
+
+.estado--inactivo {
+  background-color: #F1F5F9;
+  color: var(--color-texto-suave);
+  border: 1px solid var(--color-borde);
+}
+
+.estado--cargando {
+  background-color: #FEF9C3;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+  /* Pulsación para indicar que está trabajando */
+  animation: pulsar 1.2s ease-in-out infinite;
+}
+
+.estado--exitoso {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #86EFAC;
+}
+
+.estado--seguimiento {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+  border: 1px solid #93C5FD;
+  animation: pulsar 1.5s ease-in-out infinite;
+}
+
+.estado--error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+
+/* Animación de pulso para estados activos */
+@keyframes pulsar {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+
+/* ----------------------------------------------------------
+   7. BOTONES
+---------------------------------------------------------- */
+.botones-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: var(--fuente-principal);
+  cursor: pointer;
+  transition: background-color var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Botón primario (azul) */
+.btn--primario {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.btn--primario:hover:not(:disabled) {
+  background-color: var(--color-primario-osc);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+/* Botón secundario (azul cielo) */
+.btn--secundario {
+  background-color: var(--color-secundario);
+  color: white;
+}
+
+.btn--secundario:hover:not(:disabled) {
+  background-color: #0284C7;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+}
+
+/* Botón de peligro (rojo) */
+.btn--peligro {
+  background-color: var(--color-peligro);
+  color: white;
+}
+
+.btn--peligro:hover:not(:disabled) {
+  background-color: var(--color-peligro-osc);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+}
+
+/* ----------------------------------------------------------
+   8. GRID DE DATOS (latitud, longitud, precisión, hora)
+---------------------------------------------------------- */
+.datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.dato-item {
+  background-color: var(--fondo-pagina);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: border-color var(--transicion);
+}
+
+/* Cuando hay datos, resaltar levemente */
+.dato-item--activo {
+  border-color: var(--color-secundario);
+}
+
+/* Item que ocupa todo el ancho (hora) */
+.dato-item--ancho {
+  grid-column: 1 / -1;
+}
+
+.dato-item__etiqueta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dato-item__valor {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  font-variant-numeric: tabular-nums;
+  /* Animación sutil al cambiar */
+  transition: color var(--transicion);
+}
+
+/* ----------------------------------------------------------
+   9. CONTADOR DE ACTUALIZACIONES
+---------------------------------------------------------- */
+.contador-descripcion {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.contador-numero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+#contador-actualizaciones {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primario);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.contador-label {
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+  font-weight: 500;
+}
+
+/* Animación cuando el contador aumenta */
+.contador-flash {
+  transform: scale(1.15);
+  color: var(--color-secundario) !important;
+}
+
+/* ----------------------------------------------------------
+   10. MAPA
+---------------------------------------------------------- */
+.tarjeta--mapa {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.mapa-contenedor {
+  flex: 1;
+  min-height: 420px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-borde);
+  /* Color de fondo mientras carga */
+  background-color: #E0E7EF;
+}
+
+.mapa-nota {
+  font-size: 0.75rem;
+  color: var(--color-texto-suave);
+  margin-top: 0.6rem;
+  text-align: right;
+}
+
+/* ----------------------------------------------------------
+   11. PIE DE PÁGINA
+---------------------------------------------------------- */
+.pie {
+  background-color: var(--fondo-tarjeta);
+  border-top: 1px solid var(--color-borde);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+/* ----------------------------------------------------------
+   12. DISEÑO RESPONSIVE
+      Adapta el layout a tablets y teléfonos
+---------------------------------------------------------- */
+
+/* Tablets (ancho menor a 900px): una sola columna */
+@media (max-width: 900px) {
+  .contenedor-principal {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .tarjeta--mapa {
+    height: auto;
+  }
+
+  .mapa-contenedor {
+    min-height: 350px;
+  }
+}
+
+/* Teléfonos (ancho menor a 500px) */
+@media (max-width: 500px) {
+  .encabezado {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .encabezado__titulo {
+    font-size: 1.4rem;
+  }
+
+  .datos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dato-item--ancho {
+    grid-column: auto;
+  }
+
+  .mapa-contenedor {
+    min-height: 280px;
+  }
+
+  .contenedor-principal {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+}
