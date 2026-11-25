@@ -1,26 +1,17 @@
-/* ============================================================
-   GeoTracker — style.css
-   Estilo moderno tipo dashboard
-   Paleta: azul (#2563EB), blanco, grises neutros
-   ============================================================ */
 
-/* ----------------------------------------------------------
-   1. VARIABLES CSS GLOBALES
-      Centraliza los colores y medidas para fácil modificación
----------------------------------------------------------- */
 :root {
-  --color-primario:     #2563EB;   /* Azul principal */
-  --color-primario-osc: #1D4ED8;   /* Azul oscuro (hover) */
-  --color-secundario:   #0EA5E9;   /* Azul cielo */
-  --color-peligro:      #DC2626;   /* Rojo para "detener" */
+  --color-primario:     #2563EB;  
+  --color-primario-osc: #1D4ED8;   
+  --color-secundario:   #0EA5E9;   
+  --color-peligro:      #DC2626; 
   --color-peligro-osc:  #B91C1C;
-  --color-exito:        #16A34A;   /* Verde para estado activo */
-  --color-advertencia:  #D97706;   /* Naranja para advertencias */
+  --color-exito:        #16A34A;   
+  --color-advertencia:  #D97706;   
 
-  --fondo-pagina:       #F1F5F9;   /* Gris muy claro */
+  --fondo-pagina:       #F1F5F9;  
   --fondo-tarjeta:      #FFFFFF;
-  --color-texto:        #1E293B;   /* Casi negro */
-  --color-texto-suave:  #64748B;   /* Gris medio */
+  --color-texto:        #1E293B;   
+  --color-texto-suave:  #64748B;   
   --color-borde:        #E2E8F0;
 
   --radio-borde:        12px;
@@ -31,9 +22,6 @@
   --fuente-principal:   'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* ----------------------------------------------------------
-   2. RESET Y BASE
----------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -63,9 +51,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ----------------------------------------------------------
-   3. ENCABEZADO
----------------------------------------------------------- */
 .encabezado {
   background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-secundario) 100%);
   color: white;
@@ -84,7 +69,6 @@ a:hover {
   gap: 0.6rem;
 }
 
-/* SVG en el encabezado */
 .encabezado__icono-svg {
   width: 2rem;
   height: 2rem;
@@ -104,9 +88,6 @@ a:hover {
   font-weight: 400;
 }
 
-/* ----------------------------------------------------------
-   4. CONTENEDOR PRINCIPAL (layout de dos columnas)
----------------------------------------------------------- */
 .contenedor-principal {
   display: grid;
   grid-template-columns: 380px 1fr;
@@ -118,9 +99,6 @@ a:hover {
   margin: 0 auto;
 }
 
-/* ----------------------------------------------------------
-   5. TARJETAS (componente reutilizable)
----------------------------------------------------------- */
 .tarjeta {
   background: var(--fondo-tarjeta);
   border-radius: var(--radio-borde);
@@ -147,7 +125,6 @@ a:hover {
   gap: 0.4rem;
 }
 
-/* SVG en títulos de tarjetas y etiquetas de datos */
 .icono-svg {
   width: 1rem;
   height: 1rem;
@@ -157,25 +134,19 @@ a:hover {
   vertical-align: middle;
 }
 
-/* SVG más pequeño para etiquetas de datos */
 .icono-svg--sm {
   width: 0.8rem;
   height: 0.8rem;
 }
 
-/* SVG dentro de botones */
 .btn-icono {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
-  /* stroke y fill heredan de currentColor (blanco en botones) */
   stroke: currentColor;
   fill: currentColor;
 }
 
-/* ----------------------------------------------------------
-   6. BADGE DE ESTADO
----------------------------------------------------------- */
 .estado-badge {
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -195,7 +166,6 @@ a:hover {
   background-color: #FEF9C3;
   color: #92400E;
   border: 1px solid #FDE68A;
-  /* Pulsación para indicar que está trabajando */
   animation: pulsar 1.2s ease-in-out infinite;
 }
 
@@ -218,15 +188,11 @@ a:hover {
   border: 1px solid #FCA5A5;
 }
 
-/* Animación de pulso para estados activos */
 @keyframes pulsar {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.65; }
 }
 
-/* ----------------------------------------------------------
-   7. BOTONES
----------------------------------------------------------- */
 .botones-grupo {
   display: flex;
   flex-direction: column;
@@ -258,7 +224,6 @@ a:hover {
   cursor: not-allowed;
 }
 
-/* Botón primario (azul) */
 .btn--primario {
   background-color: var(--color-primario);
   color: white;
@@ -269,7 +234,6 @@ a:hover {
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
 }
 
-/* Botón secundario (azul cielo) */
 .btn--secundario {
   background-color: var(--color-secundario);
   color: white;
@@ -280,7 +244,6 @@ a:hover {
   box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
 }
 
-/* Botón de peligro (rojo) */
 .btn--peligro {
   background-color: var(--color-peligro);
   color: white;
@@ -291,9 +254,6 @@ a:hover {
   box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
 }
 
-/* ----------------------------------------------------------
-   8. GRID DE DATOS (latitud, longitud, precisión, hora)
----------------------------------------------------------- */
 .datos-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -311,12 +271,10 @@ a:hover {
   transition: border-color var(--transicion);
 }
 
-/* Cuando hay datos, resaltar levemente */
 .dato-item--activo {
   border-color: var(--color-secundario);
 }
 
-/* Item que ocupa todo el ancho (hora) */
 .dato-item--ancho {
   grid-column: 1 / -1;
 }
@@ -337,13 +295,9 @@ a:hover {
   font-weight: 700;
   color: var(--color-primario);
   font-variant-numeric: tabular-nums;
-  /* Animación sutil al cambiar */
   transition: color var(--transicion);
 }
 
-/* ----------------------------------------------------------
-   9. CONTADOR DE ACTUALIZACIONES
----------------------------------------------------------- */
 .contador-descripcion {
   font-size: 0.82rem;
   color: var(--color-texto-suave);
@@ -372,15 +326,11 @@ a:hover {
   font-weight: 500;
 }
 
-/* Animación cuando el contador aumenta */
 .contador-flash {
   transform: scale(1.15);
   color: var(--color-secundario) !important;
 }
 
-/* ----------------------------------------------------------
-   10. MAPA
----------------------------------------------------------- */
 .tarjeta--mapa {
   height: 100%;
   display: flex;
@@ -394,7 +344,6 @@ a:hover {
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--color-borde);
-  /* Color de fondo mientras carga */
   background-color: #E0E7EF;
 }
 
@@ -405,9 +354,7 @@ a:hover {
   text-align: right;
 }
 
-/* ----------------------------------------------------------
-   11. PIE DE PÁGINA
----------------------------------------------------------- */
+
 .pie {
   background-color: var(--fondo-tarjeta);
   border-top: 1px solid var(--color-borde);
@@ -417,12 +364,7 @@ a:hover {
   color: var(--color-texto-suave);
 }
 
-/* ----------------------------------------------------------
-   12. DISEÑO RESPONSIVE
-      Adapta el layout a tablets y teléfonos
----------------------------------------------------------- */
 
-/* Tablets (ancho menor a 900px): una sola columna */
 @media (max-width: 900px) {
   .contenedor-principal {
     grid-template-columns: 1fr;
@@ -438,7 +380,6 @@ a:hover {
   }
 }
 
-/* Teléfonos (ancho menor a 500px) */
 @media (max-width: 500px) {
   .encabezado {
     padding: 1rem;
