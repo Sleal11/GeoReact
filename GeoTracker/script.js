@@ -27,7 +27,7 @@ const elementos = {
 };
 
 
-const mapa = L.map('mapa').setView([20, 0], 2); // Vista inicial: mundo
+const mapa = L.map('mapa').setView([20, 0], 2); 
 
 
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
